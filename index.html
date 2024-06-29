@@ -85,11 +85,26 @@
               <p id="explanation"></p>
             </div>
           </div>
+          <div class="mt-8 flex justify-center items-center">
+            <a href="https://www.tiktok.com/@xni_yee12" target="_blank" rel="noopener noreferrer" class="mx-2">
+              <img src="tt.png" alt="TikTok" class="w-10">
+            </a>
+            <a href="https://www.instagram.com/arysnanto_/" target="_blank" rel="noopener noreferrer" class="mx-2">
+              <img src="ig.png" alt="Instagram" class="w-10">
+            </a>
+            <a href="https://chat.whatsapp.com/Jp0ALtS5ToiESimQMGCtAV" target="_blank" rel="noopener noreferrer" class="mx-2">
+              <img src="wa.png" alt="WhatsApp" class="w-10">
+            </a>
+          </div>
+          
         </div>
       </div>
     </div>
+    
   </div>
-
+<footer style="margin-top: 0px;color:white">
+    <p>&copy; Copyrigth 2024 by DistandFriend</p>
+</footer>
   <script>
     document.getElementById('khodamForm').addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent default form submission
@@ -109,7 +124,7 @@
 
           // Format hasil yang akan ditampilkan
           const result = `${username}, kamu lahir pada ${tanggal_lahir}. Khodammu hari ini adalah: ${randomText}`;
-          const explanation = `Khodammu memiliki tingkat kehadiran sebesar ${randomPercentage}%.`;
+          const explanation = ` , Khodammu memiliki tingkat ketepatan sebesar ${randomPercentage}%.`;
 
           // Tampilkan hasil ke dalam elemen dengan id "result"
           document.getElementById('percentage').textContent = `${randomPercentage}%`;
@@ -118,8 +133,7 @@
           // Atur clip-path berdasarkan persentase untuk efek potong lingkaran
           const circle = document.getElementById('circle');
           const clipValue = randomPercentage / 100; // Hitung nilai potongan berdasarkan persentase
-          circle.style.clipPath = `polygon(0 0, 100% 0, 100% ${clipValue * 100}%, 0 ${clipValue * 100}%)`;
-
+         
           // Tampilkan container hasil
           document.getElementById('result').style.display = 'block';
           // Sembunyikan formulir
