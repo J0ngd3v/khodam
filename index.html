@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="img/pngwing.com.png" type="image/x-icon">
+  <meta property="og:image" content="https://cuits.my.id/v1/img/ilus.png">
+  <title>CuitsApp | Anonymous Chat</title>
+  <!-- Import Tailwind CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600&family=Poppins:ital,wght@0,400;0,700;1,600&family=VT323&display=swap');
+    body {
+      background-color: #191825 !important;
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+    }
+    .result-container {
+      margin-top: 30px;
+      text-align: center;
+      display: none; /* Sembunyikan container hasil secara default */
+    }
+    .result-circle {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-color: #FBBF24;
+      color: #000;
+      font-size: 2em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      overflow: hidden; /* Mengatur overflow agar sesuai dengan clip-path */
+    }
+    .clip-path-circle {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      transition: clip-path 1s ease-out; /* Animasi transisi untuk efek potong */
+    }
+    .percentage-text {
+      font-weight: bold;
+      font-size: 1.5em;
+      z-index: 1; /* Atur z-index agar angka tetap di atas lingkaran */
+    }
+    .result-text {
+      margin-top: 20px;
+      font-size: 1.2em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col justify-center items-center">
+  <div class="min-h-screen flex items-center justify-center" style="margin-top:-20px;">
+    <div class="container d-flex justify-content-center align-items-center" style="height:100vh;">
+      <div class="card" style="border-radius:12px;padding:5px 15px 5px 15px;background-color:black;color:white;">
+        <div class="card-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-auto" id="judul">
+                <h1 class="card-title d-flex align-items-center" >
+                  PENASARAN KHODAM MU?
+                  <img src="kucing.png" width="70px" alt="" class="ml-3">
+                </h1>
+              </div>
+            </div>
+          </div>
+          <form id="khodamForm">
+            <div class="form-group">
+              <label for="username">Nama Kamu?</label>
+              <input style="background-color:transparent;padding:30px;" type="text" class="form-control" id="username" name="username" placeholder="Masukkan Nama Lengkapmu" required>
+            </div>
+            <div class="form-group">
+              <label for="tanggal_lahir">Lahir Kapan?</label>
+              <input style="background-color:transparent;padding:30px;" type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
+            </div>
+            <button type="submit" class="btn btn-outline-warning" style="padding:5px 30px 5px 30px">Cek Khodam</button>
+          </form>
+          <div id="result" class="result-container">
+            <div id="circle" class="result-circle clip-path-circle">
+              <span id="percentage" class="percentage-text">50%</span>
+            </div>
+            <div class="result-text">
+              <p id="explanation"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('khodamForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Ambil nilai dari input nama dan tanggal lahir
+      const username = document.getElementById('username').value.trim();
+      const tanggal_lahir = document.getElementById('tanggal_lahir').value.trim();
+
+      // Fetch untuk mengambil teks dari file.txt
+      fetch('file.txt')
+        .then(response => response.text())
+        .then(text => {
+          const lines = text.trim().split('\n'); // Pisahkan teks per baris
+          const randomIndex = Math.floor(Math.random() * lines.length); // Pilih indeks secara acak
+          const randomText = lines[randomIndex]; // Ambil teks acak dari file.txt
+          const randomPercentage = Math.floor(Math.random() * 101); // Generate persentase acak
+
+          // Format hasil yang akan ditampilkan
+          const result = `${username}, kamu lahir pada ${tanggal_lahir}. Khodammu hari ini adalah: ${randomText}`;
+          const explanation = `Khodammu memiliki tingkat kehadiran sebesar ${randomPercentage}%.`;
+
+          // Tampilkan hasil ke dalam elemen dengan id "result"
+          document.getElementById('percentage').textContent = `${randomPercentage}%`;
+          document.getElementById('explanation').textContent = `${result} ${explanation}`;
+
+          // Atur clip-path berdasarkan persentase untuk efek potong lingkaran
+          const circle = document.getElementById('circle');
+          const clipValue = randomPercentage / 100; // Hitung nilai potongan berdasarkan persentase
+          circle.style.clipPath = `polygon(0 0, 100% 0, 100% ${clipValue * 100}%, 0 ${clipValue * 100}%)`;
+
+          // Tampilkan container hasil
+          document.getElementById('result').style.display = 'block';
+          // Sembunyikan formulir
+          document.getElementById('khodamForm').style.display = 'none';
+          document.getElementById('judul').style.display = 'none';
+        })
+        .catch(error => {
+          console.error('Error fetching or reading file:', error);
+          document.getElementById('explanation').textContent = 'Maaf, terjadi kesalahan dalam memproses permintaan.';
+        });
+    });
+  </script>
+</body>
+</html>
